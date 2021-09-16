@@ -2,6 +2,30 @@
 ## Kocharyan Tigran
 
 ---
+## Last release:
+
+### UI:
+Реализованы два основных фрагмента:
+- Список сохраненных переведенных слов (a.k.a) Wordlist
+- Перевод слова и добавление его в основной список (a.k.a) Translate
+
+Также реализован BottomSheetDialogFragment для отображения подробностей переведенного слова. 
+Показывается при нажатии на слово в Wordlist.
+
+### Features:
+- Удаление слов из словаря с помощью swipe.
+- Перевод слов работает как search engine. Ожидает debounce и обращается к серверу.
+- Словарь сам обновляется с помощью LiveData из Room Database.
+
+### Текущие технологии:
+DB - Room
+DI - Dagger
+Images - Coil
+Reactivity - RxJava
+
+Проект на основе MVVM и Clean Architecture.
+
+---
 
 ## MVP 0
 * есть список слов (1й экран)

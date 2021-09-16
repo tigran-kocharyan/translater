@@ -7,6 +7,9 @@ plugins {
 }
 
 android {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         viewBinding = true
     }
@@ -15,21 +18,16 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-//        javaCompileOptions {
-//            annotationProcessorOptions {
-//                arguments = [
-//                        "room.schemaLocation": "$projectDir/src/main/assets/schemas".toString(),
-//                        "room.incremental": "true"
-//                ]
-//            }
-//        }
-
         applicationId "ru.totowka.translator"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
-
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -61,6 +59,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -79,6 +78,9 @@ dependencies {
 
     // OkHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    // Material
+    implementation 'com.google.android.material:material:1.4.0'
 
     // Basic
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

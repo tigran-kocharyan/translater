@@ -3,34 +3,30 @@ package ru.totowka.translator.data.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import ru.totowka.translator.data.datastore.db.Converters
+import ru.totowka.translator.data.datastore.db.DatabaseScheme
 import ru.totowka.translator.domain.model.MeaningEntity
 import ru.totowka.translator.domain.model.TranslationEntity
 import ru.totowka.translator.domain.model.WordEntity
 
-@Entity
+@Entity(tableName = DatabaseScheme.TranslationTableScheme.WORD_TABLE_NAME)
+@TypeConverters(Converters::class)
 @Parcelize
 data class WordDataEntity(
     @PrimaryKey
-    @SerializedName("id") var id: Integer,
+    @SerializedName("id") var id: Int,
     @SerializedName("text") var text: String?,
-    @SerializedName("meanings") var meanings: ArrayList<MeaningDataEntity>?
+//    @Embedded(prefix = "meaning")
+    @SerializedName("meanings") var meanings: List<MeaningDataEntity>?
 ) : Parcelable {
+    constructor() : this(0, "", null)
 
     fun toEntity() = WordEntity(
         id, text,
-        meanings?.mapTo(arrayListOf(), { e ->
-            MeaningEntity(
-                e.id,
-                e.partOfSpeechCode,
-                e.translation?.toEntity(),
-                e.previewUrl,
-                e.imageUrl,
-                e.transcription,
-                e.soundUrl
-            )
-        }),
+        meanings?.mapTo(arrayListOf(), { e -> e.toEntity() }),
     )
 
     companion object {
@@ -46,17 +42,22 @@ data class WordDataEntity(
     }
 }
 
-@Entity
+@Entity(tableName = DatabaseScheme.TranslationTableScheme.MEANING_TABLE_NAME)
+@TypeConverters(Converters::class)
 @Parcelize
 data class MeaningDataEntity(
-    @SerializedName("id") var id: Integer?,
+    @PrimaryKey
+    @SerializedName("id") var id: Int?,
     @SerializedName("partOfSpeechCode") var partOfSpeechCode: String?,
+//    @Embedded(prefix = "translation")
     @SerializedName("translation") var translation: TranslationDataEntity?,
     @SerializedName("previewUrl") var previewUrl: String?,
     @SerializedName("imageUrl") var imageUrl: String?,
     @SerializedName("transcription") var transcription: String?,
     @SerializedName("soundUrl") var soundUrl: String?
 ) : Parcelable {
+    constructor() : this(0, "", TranslationDataEntity(), "", "", "", "")
+
     fun toEntity() = MeaningEntity(
         id, partOfSpeechCode,
         translation?.toEntity(), previewUrl, imageUrl, transcription, soundUrl
@@ -73,12 +74,17 @@ data class MeaningDataEntity(
 }
 
 
-@Entity
+@Entity(tableName = DatabaseScheme.TranslationTableScheme.TRANSLATION_TABLE_NAME)
+@TypeConverters(Converters::class)
 @Parcelize
 data class TranslationDataEntity(
-    @SerializedName("text") var text: String? = null,
+    @PrimaryKey
+    @SerializedName("text") var text: String,
     @SerializedName("note") var note: String? = null
 ) : Parcelable {
+
+    constructor() : this("", "")
+
     fun toEntity() = TranslationEntity(text, note)
 
     companion object {

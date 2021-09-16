@@ -5,20 +5,20 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data  class WordEntity(
-    var id: Integer,
+    var id: Int,
     var text: String? = null,
     var meanings: ArrayList<MeaningEntity>? = null
 ) : Parcelable
 
 @Parcelize
 data class TranslationEntity(
-    var text: String? = null,
+    var text: String,
     var note: String? = null,
 ) : Parcelable
 
 @Parcelize
 data  class MeaningEntity(
-    var id: Integer? = null,
+    var id: Int? = null,
     var partOfSpeechCode: String? = null,
     var translation: TranslationEntity? = null,
     var previewUrl: String? = null,

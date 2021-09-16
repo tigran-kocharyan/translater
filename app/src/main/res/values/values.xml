@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="string" name="title"/>
+    <color name="blue">#0050cf</color>
+    <color name="grayLight">#7c89a3</color>
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#818C99</color>
+    <color name="windowBackground">#fff</color>
+
+    <style name="App.ThemeOverlay.Toolbar.Title" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="AppTheme.Text">
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="AppTheme.Text.Transcription" parent="AppTheme.Text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/futura_medium</item>
+        <item name="android:textColor">@color/grayLight</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    </style>
+
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="AppTheme.Text.Title2" parent="AppTheme.Text">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="AppTheme.Text.Title3" parent="AppTheme.Text.Title2">
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
+    <style name="App.ThemeOverlay.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">@color/windowBackground</item>
+        <item name="android:fontFamily">@font/futura_medium</item>
+        <item name="fontFamily">@font/futura_medium</item>
+    </style>
+
+    <style name="AppTheme" />
+    <declare-styleable name="BorderedEditText">
+        <attr name="title"/>
+    </declare-styleable>
+    <declare-styleable name="BorderedTextView">
+        <attr name="title"/>
+    </declare-styleable>
+    <declare-styleable name="HseButton">
+        <attr format="enum" name="type">
+            <enum name="BLUE" value="0"/>
+            <enum name="TRANSPARENT" value="1"/>
+            <enum name="TRANSPARENT_WITH_BORDER" value="2"/>
+            <enum name="SECONDARY" value="3"/>
+        </attr>
+        <attr format="reference" name="icon"/>
+    </declare-styleable>
+</resources>

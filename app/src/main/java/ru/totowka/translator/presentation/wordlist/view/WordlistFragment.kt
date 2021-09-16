@@ -22,11 +22,13 @@ import ru.totowka.translator.databinding.FragmentWordlistBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.presentation.translate.view.TranslateFragment
+import ru.totowka.translator.presentation.wordinfo.WordDetailsBottomDialogFragment
 import ru.totowka.translator.presentation.wordlist.adapter.WordlistAdapter
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModel
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModelFactory
 import ru.totowka.translator.utils.SchedulersProvider
 import ru.totowka.translator.utils.callback.SwipeToDeleteCallback
+import ru.totowka.translator.utils.callback.WordClickListener
 import javax.inject.Inject
 
 class WordlistFragment : Fragment() {
@@ -36,6 +38,16 @@ class WordlistFragment : Fragment() {
 
     @Inject lateinit var interactor: DictionaryInteractor
     @Inject lateinit var schedulers: SchedulersProvider
+
+    var clickListener = object : WordClickListener {
+        override fun onClick(word: WordEntity) {
+            val wordDetailsBottomDialogFragment = WordDetailsBottomDialogFragment.newInstance(word)
+            wordDetailsBottomDialogFragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                WordDetailsBottomDialogFragment.TAG
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +89,7 @@ class WordlistFragment : Fragment() {
     }
 
     private fun createAdapter(view: View) {
-        adapter = WordlistAdapter(emptyList())
+        adapter = WordlistAdapter(emptyList(), clickListener)
         val recyclerView = view.findViewById<RecyclerView>(R.id.wordlist)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

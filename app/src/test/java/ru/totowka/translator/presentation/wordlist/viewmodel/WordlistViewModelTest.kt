@@ -16,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import ru.totowka.translator.data.model.WordDataEntity
+import ru.totowka.translator.data.repository.DictionaryRepositoryImplTest
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.scheduler.SchedulersProvider
@@ -95,11 +96,6 @@ class WordlistViewModelTest {
 
         viewModel.deleteWord(ID)
 
-        verifySequence {
-            progressObserver.onChanged(true)
-            progressObserver.onChanged(false)
-        }
-
         verify { errorObserver wasNot Called }
     }
 
@@ -122,11 +118,6 @@ class WordlistViewModelTest {
         every { dictionaryInteractor.deleteAllWords() } returns Completable.complete()
 
         viewModel.deleteAllWords()
-
-        verifySequence {
-            progressObserver.onChanged(true)
-            progressObserver.onChanged(false)
-        }
 
         verify { errorObserver wasNot Called }
     }
@@ -172,28 +163,20 @@ class WordlistViewModelTest {
 
     @Test
     fun `updateWord is success`() {
-        every { dictionaryInteractor.addWord(entityStub) } returns Completable.complete()
+        every { dictionaryInteractor.updateWord(entityStub) } returns Completable.complete()
 
         viewModel.updateWord(entityStub)
-
-        verifySequence {
-            progressObserver.onChanged(true)
-        }
 
         verify { errorObserver wasNot Called }
     }
 
     @Test
     fun `updateWord is error`() {
-        every { dictionaryInteractor.addWord(entityStub) } returns Completable.error(exception)
+        every { dictionaryInteractor.updateWord(entityStub) } returns Completable.error(exception)
 
         viewModel.updateWord(entityStub)
 
-        verifySequence {
-            progressObserver.onChanged(true)
-            errorObserver.onChanged(exception)
-            progressObserver.onChanged(false)
-        }
+        verify(exactly = 1) { errorObserver.onChanged(exception) }
     }
 
     companion object {

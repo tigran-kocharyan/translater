@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.WordEntity
+import ru.totowka.translator.utils.Common
 import ru.totowka.translator.utils.callback.WordClickListener
 
 /**
@@ -48,6 +49,7 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener{clickListener.onClick(wordEntity)}
         wordView.text = wordEntity.text ?: ""
         translationView.text = wordEntity.meanings?.first()?.translation?.text ?: ""
-        partOfSpeechView.text = wordEntity.meanings?.first()?.partOfSpeechCode ?: ""
+        partOfSpeechView.text = Common.getPartOfSpeech(wordEntity.meanings?.first()?.partOfSpeechCode ?: "")
+
     }
 }

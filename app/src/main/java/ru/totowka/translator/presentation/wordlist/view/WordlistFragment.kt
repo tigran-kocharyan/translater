@@ -39,8 +39,8 @@ class WordlistFragment : Fragment() {
     private lateinit var adapter: WordlistAdapter
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
-    @Inject private lateinit var interactor: DictionaryInteractor
-    @Inject private lateinit var schedulers: SchedulersProvider
+    @Inject lateinit var interactor: DictionaryInteractor
+    @Inject lateinit var schedulers: SchedulersProvider
 
     private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {

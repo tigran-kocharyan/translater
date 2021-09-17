@@ -50,9 +50,9 @@ class TranslateFragment : Fragment() {
         }
     }
 
-    @Inject private lateinit var dictionaryInteractor: DictionaryInteractor
-    @Inject private lateinit var translationInteractor: TranslationInteractor
-    @Inject private lateinit var schedulers: SchedulersProvider
+    @Inject lateinit var dictionaryInteractor: DictionaryInteractor
+    @Inject lateinit var translationInteractor: TranslationInteractor
+    @Inject lateinit var schedulers: SchedulersProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

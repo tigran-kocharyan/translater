@@ -30,11 +30,13 @@ class TranslateViewModel(
      *
      * @param input слово для перевода
      */
-    fun translate(input: String) = disposables.add(translationInteractor.getTranslation(input)
+    fun translate(input: String) {
+        disposables.add(translationInteractor.getTranslation(input)
             .observeOn(schedulers.io()).subscribeOn(schedulers.io())
             .doOnSubscribe { progressLiveData.postValue(true) }
             .doAfterTerminate { progressLiveData.postValue(false) }
             .subscribe(translationsLiveData::postValue, errorLiveData::postValue))
+    }
 
 
     /**
@@ -42,14 +44,16 @@ class TranslateViewModel(
      *
      * @param wordEntity слово
      */
-    fun addWord(wordEntity: WordEntity) = disposables.add(dictionaryInteractor.addWord(wordEntity)
-        .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
-        .doOnSubscribe { progressLiveData.postValue(true) }
-        .doAfterTerminate { progressLiveData.postValue(false) }
-        .subscribeOn(schedulers.io())
-        .observeOn(schedulers.ui())
-        .subscribe({ Log.d(DB, "completed addWord!") }, errorLiveData::postValue)
-    )
+    fun addWord(wordEntity: WordEntity) {
+        disposables.add(dictionaryInteractor.addWord(wordEntity)
+            .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
+            .doOnSubscribe { progressLiveData.postValue(true) }
+            .doAfterTerminate { progressLiveData.postValue(false) }
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.ui())
+            .subscribe({ Log.d(DB, "completed addWord!") }, errorLiveData::postValue)
+        )
+    }
 
     override fun onCleared() {
         super.onCleared()

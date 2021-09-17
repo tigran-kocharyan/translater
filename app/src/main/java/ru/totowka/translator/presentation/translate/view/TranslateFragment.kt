@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import ru.totowka.translator.App
 import ru.totowka.translator.R
 import ru.totowka.translator.databinding.FragmentTranslateBinding
+import ru.totowka.translator.databinding.FragmentWorddetailsBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.interactor.TranslationInteractor
 import ru.totowka.translator.domain.model.WordEntity
@@ -59,11 +61,11 @@ class TranslateFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.applicationContext as App).appComp().inject(this)
-        binding = FragmentTranslateBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_translate, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentTranslateBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,7 +113,7 @@ class TranslateFragment : Fragment() {
 
     private fun showError(throwable: Throwable) {
         Log.d(TAG, "showError() called with: throwable = $throwable")
-        Snackbar.make(binding.root, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
+        Snackbar.make(binding.translateRoot, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
     }
 
     private fun createAdapter(view: View) {

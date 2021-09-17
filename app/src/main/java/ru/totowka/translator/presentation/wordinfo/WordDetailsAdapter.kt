@@ -1,11 +1,13 @@
 package ru.totowka.translator.presentation.wordinfo
 
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.size.Scale
@@ -14,7 +16,9 @@ import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.MeaningEntity
 import ru.totowka.translator.utils.Common.getPartOfSpeech
 import ru.totowka.translator.utils.Common.setGone
+import java.io.IOException
 import java.net.URI
+
 
 class WordDetailsAdapter(
     private var words: List<MeaningEntity>
@@ -36,7 +40,60 @@ class WordDetailsAdapter(
 
 class MeaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    private var player: MediaPlayer? = null
+
+    @Synchronized
+    private fun playSound(soundUrl: String?) {
+        releasePlayer(player)
+        try {
+            player = MediaPlayer()
+            player!!.setOnPreparedListener { preparedPlayer: MediaPlayer ->
+                if (player != null) {
+                    try {
+                        preparedPlayer.start()
+                    } catch (e: RuntimeException) {
+                        showError("Error while playing sound!")
+                    }
+                }
+            }
+            player!!.setOnErrorListener { mediaPlayer: MediaPlayer?, _, _ ->
+                showError("Error while playing sound!")
+                releasePlayer(mediaPlayer)
+                true
+            }
+            player!!.setOnCompletionListener { mediaPlayer: MediaPlayer ->
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.stop()
+                }
+                releasePlayer(mediaPlayer)
+            }
+            player!!.setDataSource(soundUrl)
+            player!!.prepareAsync()
+        } catch (e: IOException) {
+            showError("Error while playing sound!")
+        }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    @Synchronized
+    private fun releasePlayer(mediaPlayer: MediaPlayer?) {
+        if (mediaPlayer != null) {
+            try {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.stop()
+                }
+                mediaPlayer.release()
+            } catch (e: RuntimeException) {
+                showError("Error while playing sound!")
+            }
+        }
+    }
+
     private val imageView: ImageView = itemView.findViewById(R.id.image)
+    private val soundPlayerButton: ImageButton = itemView.findViewById(R.id.soundplayer)
     private val translationView: TextView = itemView.findViewById(R.id.translation)
     private val noteView: TextView = itemView.findViewById(R.id.note)
     private val transcriptionView: TextView = itemView.findViewById(R.id.transcription)
@@ -47,14 +104,6 @@ class MeaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var url = URI(it).host + URI(it).path
             if (!url.startsWith("https://") && !url.startsWith("http://"))
                 url = "https://$url"
-//            Glide
-//                .with(this)
-//                .load(url)
-//                .centerCrop()
-//                .placeholder(R.drawable.ic_image)
-//                .error(R.drawable.ic_broken)
-//                .fallback(R.drawable.ic_broken)
-//                .into(image)
             imageView.load(url) {
                 crossfade(true)
                 error(R.drawable.ic_broken)
@@ -71,10 +120,16 @@ class MeaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             } ?: noteView.setGone()
         } ?: noteView.setGone()
         meaningEntity.transcription?.let {
-            transcriptionView.text = it
+            transcriptionView.text = "[$it]"
         } ?: transcriptionView.setGone()
         meaningEntity.partOfSpeechCode?.let {
             partOfSpeechView.text = getPartOfSpeech(it)
+        } ?: partOfSpeechView.setGone()
+        meaningEntity.soundUrl?.let { soundUrl ->
+            var url = soundUrl
+            if (!url.startsWith("https://") && !url.startsWith("http://"))
+                url = "https:$soundUrl"
+            soundPlayerButton.setOnClickListener { playSound(url) }
         } ?: partOfSpeechView.setGone()
     }
 }

@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -35,11 +38,10 @@ class WordlistFragment : Fragment() {
     private lateinit var adapter: WordlistAdapter
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
-
     @Inject lateinit var interactor: DictionaryInteractor
     @Inject lateinit var schedulers: SchedulersProvider
 
-    var clickListener = object : WordClickListener {
+    private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {
             val wordDetailsBottomDialogFragment = WordDetailsBottomDialogFragment.newInstance(word)
             wordDetailsBottomDialogFragment.show(
@@ -52,28 +54,27 @@ class WordlistFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.applicationContext as App).appComp().inject(this)
-        binding = FragmentWordlistBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_wordlist, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentWordlistBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).setSupportActionBar(view.findViewById<Toolbar>(R.id.toolbar).apply {
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar.apply {
             this.title = "Wordlist"
         })
 
-        createAdapter(view)
+        createAdapter()
         createViewModel()
-        createFab(view)
+        createFab()
         observeLiveData()
     }
 
-    private fun createFab(view: View) {
-        val fabAdd = view.findViewById<FloatingActionButton>(R.id.fab_add)
-        fabAdd.setOnClickListener {
+    private fun createFab() {
+        binding.fabAdd.setOnClickListener {
             (activity as AppCompatActivity).supportFragmentManager
                 .beginTransaction()
                 .addToBackStack(null)
@@ -88,19 +89,18 @@ class WordlistFragment : Fragment() {
         ).get(WordlistViewModel::class.java)
     }
 
-    private fun createAdapter(view: View) {
+    private fun createAdapter() {
         adapter = WordlistAdapter(emptyList(), clickListener)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.wordlist)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.wordlist.layoutManager = LinearLayoutManager(context)
+        binding.wordlist.adapter = adapter
+        binding.wordlist.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.deleteWord(adapter.getAt(viewHolder.position).id)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.wordlist)
     }
 
     private fun observeLiveData() {
@@ -111,17 +111,18 @@ class WordlistFragment : Fragment() {
 
     private fun showProgress(isVisible: Boolean) {
         Log.i(TAG, "showProgress called with param = $isVisible")
-        binding.progressbar.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.progressbar.visibility = if (isVisible) VISIBLE else View.GONE
     }
 
     private fun showWords(list: List<WordEntity>) {
         Log.d(TAG_ADD, "showData() called with: list = $list")
+        binding.addWordTip.visibility = if(list.isEmpty()) VISIBLE else INVISIBLE
         adapter.setData(list)
     }
 
     private fun showError(throwable: Throwable) {
         Log.d(TAG, "showError() called with: throwable = $throwable")
-        Snackbar.make(binding.root, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
+        Snackbar.make(binding.wordlistRoot, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
     }
 
     companion object {

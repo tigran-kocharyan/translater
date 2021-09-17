@@ -11,5 +11,6 @@ import javax.inject.Inject
  */
 class TranslatorRepositoryImpl @Inject constructor(private val skyEngApi: SkyEngApi) : TranslatorRepository {
     override fun getWordTranslation(word: String): Single<List<WordEntity>> {
-        return skyEngApi.getWordTranslation(word).map { list -> list.map {it.toEntity()}}}
+        return skyEngApi.getWordTranslation(word).map { list -> list.map { it.toEntity() } }
     }
+}

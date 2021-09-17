@@ -27,9 +27,9 @@ import ru.totowka.translator.presentation.wordlist.adapter.WordlistAdapter
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModel
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModelFactory
 import ru.totowka.translator.utils.Common.string
-import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import ru.totowka.translator.utils.callback.SwipeToDeleteCallback
 import ru.totowka.translator.utils.callback.WordClickListener
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import javax.inject.Inject
 
 /**
@@ -39,8 +39,10 @@ class WordlistFragment : Fragment() {
     private lateinit var adapter: WordlistAdapter
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
-    @Inject lateinit var interactor: DictionaryInteractor
-    @Inject lateinit var schedulers: SchedulersProvider
+    @Inject
+    lateinit var interactor: DictionaryInteractor
+    @Inject
+    lateinit var schedulers: SchedulersProvider
 
     private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {
@@ -58,7 +60,7 @@ class WordlistFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentWordlistBinding.inflate(inflater,container,false)
+        binding = FragmentWordlistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -117,7 +119,7 @@ class WordlistFragment : Fragment() {
 
     private fun showWords(list: List<WordEntity>) {
         Log.d(TAG_ADD, "showData() called with: list = $list")
-        binding.addWordTip.visibility = if(list.isEmpty()) VISIBLE else INVISIBLE
+        binding.addWordTip.visibility = if (list.isEmpty()) VISIBLE else INVISIBLE
         adapter.setData(list)
     }
 

@@ -1,7 +1,6 @@
 package ru.totowka.translator.presentation
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ru.totowka.translator.R
 import ru.totowka.translator.presentation.wordlist.view.WordlistFragment

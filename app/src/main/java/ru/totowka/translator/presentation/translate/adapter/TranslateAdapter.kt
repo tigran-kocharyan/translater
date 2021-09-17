@@ -46,10 +46,9 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val partOfSpeechView: TextView = itemView.findViewById(R.id.partOfSpeech)
 
     fun bind(wordEntity: WordEntity, clickListener: WordClickListener) {
-        itemView.setOnClickListener{clickListener.onClick(wordEntity)}
+        itemView.setOnClickListener { clickListener.onClick(wordEntity) }
         wordView.text = wordEntity.text ?: ""
         translationView.text = wordEntity.meanings?.first()?.translation?.text ?: ""
         partOfSpeechView.text = Common.getPartOfSpeech(wordEntity.meanings?.first()?.partOfSpeechCode ?: "")
-
     }
 }

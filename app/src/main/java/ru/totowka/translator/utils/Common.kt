@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.view.View
 import androidx.annotation.StringRes
-import ru.totowka.translator.R
 
 /**
  * Объект для работы с методами во время UI

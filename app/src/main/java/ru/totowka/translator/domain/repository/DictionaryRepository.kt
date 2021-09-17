@@ -13,6 +13,7 @@ interface DictionaryRepository {
      * Обновление слова в БД
      */
     fun update(word: WordEntity): Completable
+
     /**
      * Добавление слова в БД
      */
@@ -22,6 +23,7 @@ interface DictionaryRepository {
      * Удаление конкретного слова из БД
      */
     fun delete(id: Int): Completable
+
     /**
      * Удаление всех слов из БД
      */
@@ -33,6 +35,7 @@ interface DictionaryRepository {
      * Получение конкретного слова из БД
      */
     fun get(id: Int): Single<WordEntity>
+
     /**
      * Получение всех слов из БД
      */

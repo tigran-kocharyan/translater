@@ -29,8 +29,8 @@ import ru.totowka.translator.presentation.translate.adapter.TranslateAdapter
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModel
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModelFactory
 import ru.totowka.translator.utils.Common.string
-import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import ru.totowka.translator.utils.callback.WordClickListener
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -50,9 +50,12 @@ class TranslateFragment : Fragment() {
         }
     }
 
-    @Inject lateinit var dictionaryInteractor: DictionaryInteractor
-    @Inject lateinit var translationInteractor: TranslationInteractor
-    @Inject lateinit var schedulers: SchedulersProvider
+    @Inject
+    lateinit var dictionaryInteractor: DictionaryInteractor
+    @Inject
+    lateinit var translationInteractor: TranslationInteractor
+    @Inject
+    lateinit var schedulers: SchedulersProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

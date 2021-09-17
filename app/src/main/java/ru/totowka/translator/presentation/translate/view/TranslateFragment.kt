@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,40 +22,37 @@ import io.reactivex.disposables.CompositeDisposable
 import ru.totowka.translator.App
 import ru.totowka.translator.R
 import ru.totowka.translator.databinding.FragmentTranslateBinding
-import ru.totowka.translator.databinding.FragmentWorddetailsBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.interactor.TranslationInteractor
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.presentation.translate.adapter.TranslateAdapter
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModel
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModelFactory
-import ru.totowka.translator.utils.SchedulersProvider
+import ru.totowka.translator.utils.Common.string
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import ru.totowka.translator.utils.callback.WordClickListener
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
+/**
+ * Фрагмент, отвечающий за экран переводчика
+ */
 class TranslateFragment : Fragment() {
     private lateinit var viewModel: TranslateViewModel
     private lateinit var binding: FragmentTranslateBinding
     private lateinit var adapter: TranslateAdapter
     private val disposables = CompositeDisposable()
 
-    var clickListener = object : WordClickListener {
+    private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {
             viewModel.addWord(word)
             exit()
         }
     }
 
-    @Inject
-    lateinit var dictionaryInteractor: DictionaryInteractor
-
-    @Inject
-    lateinit var translationInteractor: TranslationInteractor
-
-    @Inject
-    lateinit var schedulers: SchedulersProvider
+    @Inject private lateinit var dictionaryInteractor: DictionaryInteractor
+    @Inject private lateinit var translationInteractor: TranslationInteractor
+    @Inject private lateinit var schedulers: SchedulersProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,7 +126,7 @@ class TranslateFragment : Fragment() {
             this.setSupportActionBar(view.findViewById(R.id.toolbar))
             this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             this.supportActionBar?.setDisplayShowHomeEnabled(true)
-            this.supportActionBar?.title = "Translate"
+            this.supportActionBar?.title = string(R.string.translate_name)
         }
 
     }
@@ -161,6 +157,10 @@ class TranslateFragment : Fragment() {
         private const val TAG_ADD = "$TAG ADD"
         private const val TAG_ERROR = "$TAG ERROR"
         private const val TAG_PROGRESS = "$TAG PROGRESS"
+
+        /**
+         * Получение объекта [TranslateFragment]
+         */
         fun newInstance(): TranslateFragment {
             return TranslateFragment()
         }

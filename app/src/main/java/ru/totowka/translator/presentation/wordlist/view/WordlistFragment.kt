@@ -8,15 +8,12 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.totowka.translator.App
@@ -29,17 +26,21 @@ import ru.totowka.translator.presentation.wordinfo.WordDetailsBottomDialogFragme
 import ru.totowka.translator.presentation.wordlist.adapter.WordlistAdapter
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModel
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModelFactory
-import ru.totowka.translator.utils.SchedulersProvider
+import ru.totowka.translator.utils.Common.string
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import ru.totowka.translator.utils.callback.SwipeToDeleteCallback
 import ru.totowka.translator.utils.callback.WordClickListener
 import javax.inject.Inject
 
+/**
+ * Фрагмент со списком слов
+ */
 class WordlistFragment : Fragment() {
     private lateinit var adapter: WordlistAdapter
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
-    @Inject lateinit var interactor: DictionaryInteractor
-    @Inject lateinit var schedulers: SchedulersProvider
+    @Inject private lateinit var interactor: DictionaryInteractor
+    @Inject private lateinit var schedulers: SchedulersProvider
 
     private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {
@@ -64,7 +65,7 @@ class WordlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar.apply {
-            this.title = "Wordlist"
+            this.title = context.string(R.string.wordlist_name)
         })
 
         createAdapter()
@@ -130,6 +131,10 @@ class WordlistFragment : Fragment() {
         private const val TAG_ADD = "WordlistFragment ADD"
         private const val TAG_ERROR = "WordlistFragment ERROR"
         private const val TAG_PROGRESS = "WordlistFragment PROGRESS"
+
+        /**
+         * Получение объекта [WordlistFragment]
+         */
         fun newInstance(): WordlistFragment {
             return WordlistFragment()
         }

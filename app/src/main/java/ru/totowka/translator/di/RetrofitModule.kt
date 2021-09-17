@@ -11,7 +11,9 @@ import ru.totowka.translator.BuildConfig
 import ru.totowka.translator.data.api.SkyEngApi
 import javax.inject.Singleton
 
-
+/**
+ * Модуль для работы с Retrofit
+ */
 @Module
 class RetrofitModule {
     @Provides

@@ -15,11 +15,14 @@ import coil.transform.CircleCropTransformation
 import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.MeaningEntity
 import ru.totowka.translator.utils.Common.getPartOfSpeech
+import ru.totowka.translator.utils.Common.isConnectedInternet
 import ru.totowka.translator.utils.Common.setGone
 import java.io.IOException
 import java.net.URI
 
-
+/**
+ * Адаптер для отображения слов в BottomSheet
+ */
 class WordDetailsAdapter(
     private var words: List<MeaningEntity>
 ) : RecyclerView.Adapter<MeaningViewHolder>() {
@@ -38,46 +41,60 @@ class WordDetailsAdapter(
     }
 }
 
+/**
+ * Holder для отображения смысла слова
+ */
 class MeaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private var player: MediaPlayer? = null
 
+    /**
+     * Метод для проигрывания аудио
+     */
     @Synchronized
     private fun playSound(soundUrl: String?) {
-        releasePlayer(player)
-        try {
-            player = MediaPlayer()
-            player!!.setOnPreparedListener { preparedPlayer: MediaPlayer ->
-                if (player != null) {
-                    try {
-                        preparedPlayer.start()
-                    } catch (e: RuntimeException) {
-                        showError("Error while playing sound!")
+        if (isConnectedInternet(itemView.context)) {
+            releasePlayer(player)
+            try {
+                player = MediaPlayer()
+                player!!.setOnPreparedListener { preparedPlayer: MediaPlayer ->
+                    if (player != null) {
+                        try {
+                            preparedPlayer.start()
+                        } catch (e: RuntimeException) {
+                        }
                     }
                 }
-            }
-            player!!.setOnErrorListener { mediaPlayer: MediaPlayer?, _, _ ->
-                showError("Error while playing sound!")
-                releasePlayer(mediaPlayer)
-                true
-            }
-            player!!.setOnCompletionListener { mediaPlayer: MediaPlayer ->
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.stop()
+                player!!.setOnErrorListener { mediaPlayer: MediaPlayer?, _, _ ->
+                    showError("Error while playing sound!")
+                    releasePlayer(mediaPlayer)
+                    true
                 }
-                releasePlayer(mediaPlayer)
+                player!!.setOnCompletionListener { mediaPlayer: MediaPlayer ->
+                    if (mediaPlayer.isPlaying) {
+                        mediaPlayer.stop()
+                    }
+                    releasePlayer(mediaPlayer)
+                }
+                player!!.setDataSource(soundUrl)
+                player!!.prepareAsync()
+            } catch (e: IOException) {
             }
-            player!!.setDataSource(soundUrl)
-            player!!.prepareAsync()
-        } catch (e: IOException) {
-            showError("Error while playing sound!")
+        } else {
+            showError("Connect to the Internet!")
         }
     }
 
+    /**
+     * Отображение ошибки
+     */
     private fun showError(message: String) {
         Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Метод для остановки аудио
+     */
     @Synchronized
     private fun releasePlayer(mediaPlayer: MediaPlayer?) {
         if (mediaPlayer != null) {
@@ -87,7 +104,6 @@ class MeaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
                 mediaPlayer.release()
             } catch (e: RuntimeException) {
-                showError("Error while playing sound!")
             }
         }
     }

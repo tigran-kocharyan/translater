@@ -9,9 +9,11 @@ import io.reactivex.schedulers.Schedulers
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.interactor.TranslationInteractor
 import ru.totowka.translator.domain.model.WordEntity
-import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModel
-import ru.totowka.translator.utils.SchedulersProvider
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 
+/**
+ * ViewModel для фрагмента [TranslateFragment]
+ */
 class TranslateViewModel(
     private val dictionaryInteractor: DictionaryInteractor,
     private val translationInteractor: TranslationInteractor,
@@ -23,12 +25,23 @@ class TranslateViewModel(
     private val translationsLiveData = MutableLiveData<List<WordEntity>>()
     private val disposables = CompositeDisposable()
 
+    /**
+     * Перевести слово [input] с помощью SkyEng API
+     *
+     * @param input слово для перевода
+     */
     fun translate(input: String) = disposables.add(translationInteractor.getTranslation(input)
             .observeOn(schedulers.io()).subscribeOn(schedulers.io())
             .doOnSubscribe { progressLiveData.postValue(true) }
             .doAfterTerminate { progressLiveData.postValue(false) }
             .subscribe(translationsLiveData::postValue, errorLiveData::postValue))
 
+
+    /**
+     * Обновить слово [wordEntity] в БД
+     *
+     * @param wordEntity слово
+     */
     fun addWord(wordEntity: WordEntity) = disposables.add(dictionaryInteractor.addWord(wordEntity)
         .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
         .doOnSubscribe { progressLiveData.postValue(true) }

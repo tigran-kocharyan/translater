@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.totowka.translator.data.model.WordDataEntity
 
+/**
+ * Интерфейс для общения с базой данных. Названия функция и QUERY запрос описывают их лучше всего.
+ */
 @Dao
 interface WordsDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)

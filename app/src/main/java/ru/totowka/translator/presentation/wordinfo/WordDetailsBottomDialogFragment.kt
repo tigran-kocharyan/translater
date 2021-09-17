@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ru.totowka.translator.R
 import ru.totowka.translator.databinding.FragmentWorddetailsBinding
 import ru.totowka.translator.domain.model.MeaningEntity
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.Common.setGone
+import ru.totowka.translator.utils.Common.string
 
-
+/**
+ * BottomSheetDialogFragment для отображения смыслов переведенного слова
+ */
 class WordDetailsBottomDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentWorddetailsBinding
     private lateinit var adapter: WordDetailsAdapter
@@ -45,10 +49,13 @@ class WordDetailsBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setDetails() {
-        binding.word.text = wordEntity?.text ?: "Undefined"
+        binding.word.text = wordEntity?.text ?: context?.string(R.string.undefined)
     }
 
     companion object {
+        /**
+         * Получение инстанса [WordDetailsBottomDialogFragment]
+         */
         fun newInstance(wordEntity: WordEntity) =
             WordDetailsBottomDialogFragment().apply {
                 arguments = Bundle().apply {

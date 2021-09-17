@@ -9,8 +9,11 @@ import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.Common.getPartOfSpeech
 import ru.totowka.translator.utils.callback.WordClickListener
+import ru.totowka.translator.utils.Common.string
 
-
+/**
+ * Адаптер для работы со списком слов из БД
+ */
 class WordlistAdapter(
     private var words: List<WordEntity>, private var clickListener: WordClickListener
 ) : RecyclerView.Adapter<WordViewHolder>() {
@@ -36,6 +39,9 @@ class WordlistAdapter(
     }
 }
 
+/**
+ * Holder для отображения информации о слове
+ */
 class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val wordView: TextView = itemView.findViewById(R.id.word)
@@ -43,11 +49,12 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val partOfSpeechView: TextView = itemView.findViewById(R.id.partOfSpeech)
 
     fun bind(wordEntity: WordEntity, clickListener: WordClickListener) {
-        wordView.text = wordEntity.text ?: "Undefined"
-        translationView.text = wordEntity.meanings?.first()?.translation?.text ?: "Undefined"
+        wordView.text = wordEntity.text ?: itemView.context.string(R.string.undefined)
+        translationView.text =
+            wordEntity.meanings?.first()?.translation?.text ?: itemView.context.string(R.string.undefined)
         partOfSpeechView.text = wordEntity.meanings?.first()?.partOfSpeechCode?.let {
             getPartOfSpeech(it)
-        } ?: "Undefined"
+        } ?: itemView.context.string(R.string.undefined)
         itemView.setOnClickListener { clickListener.onClick(wordEntity) }
     }
 }

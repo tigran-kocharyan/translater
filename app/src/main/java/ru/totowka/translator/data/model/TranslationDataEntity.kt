@@ -12,6 +12,9 @@ import ru.totowka.translator.domain.model.MeaningEntity
 import ru.totowka.translator.domain.model.TranslationEntity
 import ru.totowka.translator.domain.model.WordEntity
 
+/**
+ * Data-объект слова
+ */
 @Entity(tableName = DatabaseScheme.TranslationTableScheme.WORD_TABLE_NAME)
 @TypeConverters(Converters::class)
 @Parcelize
@@ -42,6 +45,9 @@ data class WordDataEntity(
     }
 }
 
+/**
+ * Data-объект значения слова
+ */
 @Entity(tableName = DatabaseScheme.TranslationTableScheme.MEANING_TABLE_NAME)
 @TypeConverters(Converters::class)
 @Parcelize
@@ -73,7 +79,9 @@ data class MeaningDataEntity(
     }
 }
 
-
+/**
+ * Data-объект перевода слова
+ */
 @Entity(tableName = DatabaseScheme.TranslationTableScheme.TRANSLATION_TABLE_NAME)
 @TypeConverters(Converters::class)
 @Parcelize

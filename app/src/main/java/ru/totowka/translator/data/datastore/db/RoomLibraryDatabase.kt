@@ -6,6 +6,9 @@ import ru.totowka.translator.data.model.MeaningDataEntity
 import ru.totowka.translator.data.model.TranslationDataEntity
 import ru.totowka.translator.data.model.WordDataEntity
 
+/**
+ * База данных ROOM
+ */
 @Database(
     entities = [WordDataEntity::class, TranslationDataEntity::class, MeaningDataEntity::class],
     version = DatabaseScheme.DB_VERSION,

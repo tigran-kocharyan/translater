@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Translator</string>
-    <string name="word_to_translate">Word to translate...</string>
+    <string name="word_to_translate">Word to translate…</string>
+    <string name="click_to_add_a_word">Click \'+\' to add a word</string>
+    <string name="translate_name">Translate</string>
+    <string name="wordlist_name">Wordlist</string>
+    <string name="undefined">Undefined</string>
 </resources>

@@ -6,6 +6,9 @@ import com.google.gson.Gson
 import ru.totowka.translator.data.model.MeaningDataEntity
 import ru.totowka.translator.data.model.TranslationDataEntity
 
+/**
+ * Конвертеры для базы данных
+ */
 object Converters {
     @TypeConverter
     fun meaningsToJson(value: List<MeaningDataEntity>) = Gson().toJson(value)

@@ -8,6 +8,9 @@ import ru.totowka.translator.presentation.translate.view.TranslateFragment
 import ru.totowka.translator.presentation.wordlist.view.WordlistFragment
 import javax.inject.Singleton
 
+/**
+ * Общий компонент для всего приложения
+ */
 @Singleton
 @Component(
     modules = [

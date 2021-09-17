@@ -8,8 +8,12 @@ import ru.totowka.translator.data.datastore.db.WordsDao
 import ru.totowka.translator.data.model.WordDataEntity
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.domain.repository.DictionaryRepository
+import ru.totowka.translator.domain.repository.TranslatorRepository
 import javax.inject.Inject
 
+/**
+ * Релазизация [DictionaryRepository]
+ */
 class DictionaryRepositoryImpl @Inject constructor(private val wordsDao: WordsDao) : DictionaryRepository {
     override fun update(word: WordEntity) =
         Completable.fromRunnable { wordsDao.updateWord(WordDataEntity.fromEntity(word)) }

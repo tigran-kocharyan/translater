@@ -3,6 +3,9 @@ package ru.totowka.translator.domain.model
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * Domain-объект слова
+ */
 @Parcelize
 data  class WordEntity(
     var id: Int,
@@ -10,12 +13,18 @@ data  class WordEntity(
     var meanings: ArrayList<MeaningEntity>? = null
 ) : Parcelable
 
+/**
+ * Domain-объект перевода слова
+ */
 @Parcelize
 data class TranslationEntity(
     var text: String,
     var note: String? = null,
 ) : Parcelable
 
+/**
+ * Domain-объект значения слова
+ */
 @Parcelize
 data  class MeaningEntity(
     var id: Int? = null,

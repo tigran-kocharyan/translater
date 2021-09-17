@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="word_to_translate">Word to translate...</string>
+    <string name="click_to_add_a_word">Click \'+\' to add a word</string>
 </resources>

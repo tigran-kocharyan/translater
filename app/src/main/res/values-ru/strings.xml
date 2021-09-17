@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Translator</string>
+    <string name="word_to_translate">Слово для перевода…</string>
+    <string name="click_to_add_a_word">Нажмите \'+\', чтобы добавить слово</string>
+    <string name="translate_name">Переводчик</string>
+    <string name="wordlist_name">Список слов</string>
+    <string name="undefined">Неопределен</string>
+</resources>

@@ -9,6 +9,9 @@ import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.callback.WordClickListener
 
+/**
+ * Адаптер для работы со списком переведенных слов
+ */
 class TranslateAdapter(
     private var words: List<WordEntity>, private var clickListener: WordClickListener
 ) : RecyclerView.Adapter<WordViewHolder>() {
@@ -32,6 +35,9 @@ class TranslateAdapter(
     }
 }
 
+/**
+ * Холдер для отображения слова
+ */
 class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val wordView: TextView = itemView.findViewById(R.id.word)

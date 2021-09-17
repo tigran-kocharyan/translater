@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.totowka.translator.R
 import ru.totowka.translator.presentation.wordlist.view.WordlistFragment
 
+/**
+ * Основное Activity, на которое помещаются фрагменты
+ */
 class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

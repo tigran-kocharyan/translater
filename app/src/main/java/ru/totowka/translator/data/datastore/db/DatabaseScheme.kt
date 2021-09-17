@@ -1,5 +1,8 @@
 package ru.totowka.translator.data.datastore.db
 
+/**
+ * Схема для работы с БД [dictionary]
+ */
 object DatabaseScheme {
     const val DB_NAME = "dictionary"
     const val DB_VERSION = 2

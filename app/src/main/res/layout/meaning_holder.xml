@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingHorizontal="14dp"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         tools:text="человек" />
+
     <TextView
         android:id="@+id/note"
         style="@style/AppTheme.Text.Title3"
@@ -29,22 +31,43 @@
         android:textSize="12sp"
         tools:text="человек" />
 
-    <TextView
-        android:id="@+id/transcription"
-        style="@style/AppTheme.Text.Transcription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:textSize="14sp"
-        tools:text="transcription" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/partOfSpeech"
-        style="@style/AppTheme.Text.Transcription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:textSize="14sp"
-        tools:text="preposition" />
+        <ImageButton
+            app:layout_constraintTop_toTopOf="@id/transcription"
+            app:layout_constraintBottom_toBottomOf="@id/partOfSpeech"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/soundplayer"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_start" />
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/transcription"
+            style="@style/AppTheme.Text.Transcription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="18sp"
+            tools:text="[transcription]" />
+
+        <TextView
+            android:id="@+id/partOfSpeech"
+            app:layout_constraintTop_toBottomOf="@id/transcription"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/AppTheme.Text.Transcription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="18sp"
+            tools:text="preposition" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </LinearLayout>

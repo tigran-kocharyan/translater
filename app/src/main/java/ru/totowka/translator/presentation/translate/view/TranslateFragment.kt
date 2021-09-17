@@ -28,42 +28,40 @@ import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.presentation.translate.adapter.TranslateAdapter
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModel
 import ru.totowka.translator.presentation.translate.viewmodel.TranslateViewModelFactory
-import ru.totowka.translator.utils.SchedulersProvider
+import ru.totowka.translator.utils.Common.string
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
 import ru.totowka.translator.utils.callback.WordClickListener
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
+/**
+ * Фрагмент, отвечающий за экран переводчика
+ */
 class TranslateFragment : Fragment() {
     private lateinit var viewModel: TranslateViewModel
     private lateinit var binding: FragmentTranslateBinding
     private lateinit var adapter: TranslateAdapter
     private val disposables = CompositeDisposable()
 
-    var clickListener = object : WordClickListener {
+    private var clickListener = object : WordClickListener {
         override fun onClick(word: WordEntity) {
             viewModel.addWord(word)
             exit()
         }
     }
 
-    @Inject
-    lateinit var dictionaryInteractor: DictionaryInteractor
-
-    @Inject
-    lateinit var translationInteractor: TranslationInteractor
-
-    @Inject
-    lateinit var schedulers: SchedulersProvider
+    @Inject lateinit var dictionaryInteractor: DictionaryInteractor
+    @Inject lateinit var translationInteractor: TranslationInteractor
+    @Inject lateinit var schedulers: SchedulersProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.applicationContext as App).appComp().inject(this)
-        binding = FragmentTranslateBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_translate, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentTranslateBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,7 +109,7 @@ class TranslateFragment : Fragment() {
 
     private fun showError(throwable: Throwable) {
         Log.d(TAG, "showError() called with: throwable = $throwable")
-        Snackbar.make(binding.root, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
+        Snackbar.make(binding.translateRoot, throwable.toString(), BaseTransientBottomBar.LENGTH_SHORT).show()
     }
 
     private fun createAdapter(view: View) {
@@ -128,7 +126,7 @@ class TranslateFragment : Fragment() {
             this.setSupportActionBar(view.findViewById(R.id.toolbar))
             this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             this.supportActionBar?.setDisplayShowHomeEnabled(true)
-            this.supportActionBar?.title = "Translate"
+            this.supportActionBar?.title = string(R.string.translate_name)
         }
 
     }
@@ -159,6 +157,10 @@ class TranslateFragment : Fragment() {
         private const val TAG_ADD = "$TAG ADD"
         private const val TAG_ERROR = "$TAG ERROR"
         private const val TAG_PROGRESS = "$TAG PROGRESS"
+
+        /**
+         * Получение объекта [TranslateFragment]
+         */
         fun newInstance(): TranslateFragment {
             return TranslateFragment()
         }

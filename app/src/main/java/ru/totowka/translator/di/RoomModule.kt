@@ -9,6 +9,9 @@ import ru.totowka.translator.data.datastore.db.RoomDictionaryDatabase
 import ru.totowka.translator.data.datastore.db.WordsDao
 import javax.inject.Singleton
 
+/**
+ * Модуль для предоставления DI для Room
+ */
 @Module
 class RoomModule {
     @Provides

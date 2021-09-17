@@ -8,9 +8,12 @@ import ru.totowka.translator.data.repository.DictionaryRepositoryImpl
 import ru.totowka.translator.data.repository.TranslatorRepositoryImpl
 import ru.totowka.translator.domain.repository.DictionaryRepository
 import ru.totowka.translator.domain.repository.TranslatorRepository
-import ru.totowka.translator.utils.SchedulersProvider
-import ru.totowka.translator.utils.SchedulersProviderImpl
+import ru.totowka.translator.utils.scheduler.SchedulersProvider
+import ru.totowka.translator.utils.scheduler.SchedulersProviderImpl
 
+/**
+ * Модуль с информацией о биндинга интерфейсов с их реализацией
+ */
 @Module
 interface BindModule {
     @Binds

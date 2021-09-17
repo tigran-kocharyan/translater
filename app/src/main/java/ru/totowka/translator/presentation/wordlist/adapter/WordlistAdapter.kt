@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.totowka.translator.R
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.Common.getPartOfSpeech
-import ru.totowka.translator.utils.callback.WordClickListener
 import ru.totowka.translator.utils.Common.string
+import ru.totowka.translator.utils.callback.WordClickListener
 
 /**
  * Адаптер для работы со списком слов из БД

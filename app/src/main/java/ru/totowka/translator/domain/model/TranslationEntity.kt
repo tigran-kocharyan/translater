@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
  * Domain-объект слова
  */
 @Parcelize
-data  class WordEntity(
+data class WordEntity(
     var id: Int,
     var text: String? = null,
     var meanings: ArrayList<MeaningEntity>? = null
@@ -26,7 +26,7 @@ data class TranslationEntity(
  * Domain-объект значения слова
  */
 @Parcelize
-data  class MeaningEntity(
+data class MeaningEntity(
     var id: Int? = null,
     var partOfSpeechCode: String? = null,
     var translation: TranslationEntity? = null,

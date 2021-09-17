@@ -49,7 +49,7 @@ class TranslationInteractorTest {
     @Test
     fun `getTranslation is error`() {
         // Arrange
-        every { translationRepositoryImpl.getWordTranslation(WORD_TO_TRANSLATE) } returns Single.fromCallable {throw IOException()}
+        every { translationRepositoryImpl.getWordTranslation(WORD_TO_TRANSLATE) } returns Single.fromCallable { throw IOException() }
         val expected = arrayListOf(entityStub)
 
         // Act

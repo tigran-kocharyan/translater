@@ -7,16 +7,13 @@ import io.mockk.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import ru.totowka.translator.data.model.WordDataEntity
-import ru.totowka.translator.data.repository.DictionaryRepositoryImplTest
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.utils.scheduler.SchedulersProvider

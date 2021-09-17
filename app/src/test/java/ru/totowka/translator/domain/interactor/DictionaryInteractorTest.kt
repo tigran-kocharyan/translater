@@ -34,7 +34,7 @@ class DictionaryInteractorTest {
     @Test
     fun `addWord is successful`() {
         // Arrange
-        every { dictionaryRepositoryImpl.add(entityStub) } returns Completable.fromCallable {  }
+        every { dictionaryRepositoryImpl.add(entityStub) } returns Completable.fromCallable { }
 
         // Assert
         dictionaryInteractor.addWord(entityStub).test().assertComplete()
@@ -54,7 +54,7 @@ class DictionaryInteractorTest {
     @Test
     fun `updateWord is successful`() {
         // Arrange
-        every { dictionaryRepositoryImpl.update(entityStub) } returns Completable.fromCallable {  }
+        every { dictionaryRepositoryImpl.update(entityStub) } returns Completable.fromCallable { }
 
         // Assert
         dictionaryInteractor.updateWord(entityStub).test().assertComplete()
@@ -74,7 +74,7 @@ class DictionaryInteractorTest {
     @Test
     fun `deleteAllWords is successful`() {
         // Arrange
-        every { dictionaryRepositoryImpl.deleteAll() } returns Completable.fromCallable {  }
+        every { dictionaryRepositoryImpl.deleteAll() } returns Completable.fromCallable { }
 
         // Assert
         dictionaryInteractor.deleteAllWords().test().assertComplete()
@@ -94,7 +94,7 @@ class DictionaryInteractorTest {
     @Test
     fun `deleteWord is successful`() {
         // Arrange
-        every { dictionaryRepositoryImpl.delete(ID) } returns Completable.fromCallable {  }
+        every { dictionaryRepositoryImpl.delete(ID) } returns Completable.fromCallable { }
 
         // Assert
         dictionaryInteractor.deleteWord(ID).test().assertComplete()

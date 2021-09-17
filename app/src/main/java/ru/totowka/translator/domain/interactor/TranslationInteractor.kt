@@ -12,7 +12,7 @@ class TranslationInteractor @Inject constructor(private val translatorRepository
     /**
      * Получить перевод строки из SkyEng API
      */
-    fun getTranslation(word: String) : Single<List<WordEntity>> {
+    fun getTranslation(word: String): Single<List<WordEntity>> {
         return translatorRepository.getWordTranslation(word)
     }
 }

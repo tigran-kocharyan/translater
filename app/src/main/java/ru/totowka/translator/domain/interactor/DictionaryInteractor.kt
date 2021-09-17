@@ -12,6 +12,7 @@ class DictionaryInteractor @Inject constructor(private val dictionaryRepository:
      * Получить все слова из БД
      */
     fun getWords() = dictionaryRepository.getAll()
+
     /**
      * Получить слова по [id] из БД
      *
@@ -23,6 +24,7 @@ class DictionaryInteractor @Inject constructor(private val dictionaryRepository:
      * Удалить все слова из БД
      */
     fun deleteAllWords() = dictionaryRepository.deleteAll()
+
     /**
      * Удалить слово по [id] из БД
      *
@@ -36,6 +38,7 @@ class DictionaryInteractor @Inject constructor(private val dictionaryRepository:
      * @param wordEntity слово
      */
     fun addWord(wordEntity: WordEntity) = dictionaryRepository.add(wordEntity)
+
     /**
      * Обновить слово [wordEntity] в БД
      *

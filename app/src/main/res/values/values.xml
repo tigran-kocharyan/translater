@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="title" format="string" />
-    <color name="blue">#0050cf</color>
-    <color name="grayLight">#7c89a3</color>
-    <color name="grayDark">#454E60</color>
-    <color name="textPrimary">#000000</color>
-    <color name="textSecondary">#818C99</color>
-    <color name="windowBackground">@color/toolbar</color>
-
     <style name="App.ThemeOverlay.Toolbar.Title" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textSize">22sp</item>
     </style>

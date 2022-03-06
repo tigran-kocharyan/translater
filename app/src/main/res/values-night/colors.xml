@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:ns1="http://schemas.android.com/apk/res-auto">
     <color name="toolbar">@color/grayDark</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="big_divider">#515151</color>
+    <color name="blue">#5395FF</color>
+    <color name="blueLight">#155395FF</color>
+    <color name="bottomNavigation">@color/navigationBar</color>
+    <color name="buttonDisabledText">#515151</color>
+    <color name="chipColor">#25ffffff</color>
+    <color name="divider">#515151</color>
+    <color name="editTextBorderNormal">@color/navIconInactive</color>
+    <color name="editTextBorderPressed">#777</color>
+    <color name="editTextBorderSelected">@color/buttonNormal</color>
+    <color name="floatingButton">#333</color>
+    <color name="gray">@color/searchBarBackground</color>
+    <color name="grayLight">#7c89a3</color>
+    <color name="iconNormal">#5f6368</color>
+    <color name="navIconActive">@color/blue</color>
+    <color name="navIconInactive">#70ffffff</color>
+    <color name="navigationBar">#1B1C1E</color>
+    <color name="red">#F0522B</color>
+    <color name="searchBarBackground">#25ffffff</color>
+    <color name="searchBarInlineIcon">@color/iconNormal</color>
+    <color name="statusBar">#33000000</color>
+    <color name="textPrimary">#ffffff</color>
+    <color name="textSecondary">#76787A</color>
+    <color name="windowBackground">#202124</color>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blueDark</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+
+        <item name="android:windowLightStatusBar" ns1:targetApi="m">false</item>
+        <item name="android:statusBarColor" ns1:targetApi="lollipop">@color/statusBar</item>
+        <item name="android:navigationBarColor" ns1:targetApi="lollipop">@color/navigationBar</item>
+    </style>
 </resources>

@@ -2,14 +2,17 @@ package ru.totowka.translator.presentation.wordlist.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,9 +24,12 @@ import ru.totowka.translator.R
 import ru.totowka.translator.databinding.FragmentWordlistBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.model.WordEntity
+import ru.totowka.translator.presentation.LauncherActivity
 import ru.totowka.translator.presentation.translate.view.TranslateFragment
 import ru.totowka.translator.presentation.wordinfo.WordDetailsBottomDialogFragment
 import ru.totowka.translator.presentation.wordlist.adapter.WordlistAdapter
+import ru.totowka.translator.presentation.wordlist.adapter.WordlistKeyProvider
+import ru.totowka.translator.presentation.wordlist.adapter.WordlistLookup
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModel
 import ru.totowka.translator.presentation.wordlist.viewmodel.WordlistViewModelFactory
 import ru.totowka.translator.utils.Common.string
@@ -35,12 +41,17 @@ import javax.inject.Inject
 /**
  * Фрагмент со списком слов
  */
-class WordlistFragment : Fragment() {
+class WordlistFragment : Fragment(), ActionMode.Callback {
+    private var menu: Menu? = null
+    private var actionMode: ActionMode? = null
     private lateinit var adapter: WordlistAdapter
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
+    private lateinit var tracker: SelectionTracker<Long>
+
     @Inject
     lateinit var interactor: DictionaryInteractor
+
     @Inject
     lateinit var schedulers: SchedulersProvider
 
@@ -69,12 +80,85 @@ class WordlistFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar.apply {
             this.title = context.string(R.string.wordlist_name)
         })
-
+        setHasOptionsMenu(true)
         createAdapter()
         createViewModel()
         createFab()
         observeLiveData()
     }
+
+    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        mode?.menuInflater?.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?) = true
+
+    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.learn -> {
+                if (tracker.selection!!.size() >= 1) {
+                    var result = tracker.selection!!.map {
+                        adapter.getAt(it.toInt())
+                    }.toList()
+                    Toast.makeText(this.context, result.toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this.context, "Nothing to learn!", Toast.LENGTH_LONG).show()
+                }
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        tracker.clearSelection()
+        actionMode = null
+        val adapter = (binding.wordlist.adapter as WordlistAdapter)
+        binding.wordlist.adapter = adapter
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        tracker.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        tracker.onRestoreInstanceState(savedInstanceState)
+        if (tracker.hasSelection()) {
+            actionMode = (activity as LauncherActivity).startSupportActionMode(this@WordlistFragment)
+            actionMode?.title = getString(R.string.learn, tracker.selection.size())
+        }
+        super.onViewStateRestored(savedInstanceState)
+    }
+//
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.main, menu)
+//        this.menu = menu
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.learn -> {
+                if (tracker.selection!!.size() >= 1) {
+                    var result = tracker.selection!!.map {
+                        adapter.getAt(it.toInt())
+                    }.toList()
+                    Toast.makeText(this.context, result.toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this.context, "Nothing to learn!", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+//    private fun showLearnMenu(isVisible: Boolean) {
+//        menu?.findItem(R.id.learn)?.isVisible = isVisible
+//    }
 
     private fun createFab() {
         binding.fabAdd.setOnClickListener {
@@ -97,6 +181,34 @@ class WordlistFragment : Fragment() {
         binding.wordlist.layoutManager = LinearLayoutManager(context)
         binding.wordlist.adapter = adapter
         binding.wordlist.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+        tracker = SelectionTracker.Builder(
+            "wordlistSelection",
+            binding.wordlist,
+            WordlistKeyProvider(binding.wordlist),
+            WordlistLookup(binding.wordlist),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+        tracker.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    super.onSelectionChanged()
+//                    showLearnMenu(tracker.selection!!.size() >= 1)
+                    if (actionMode == null) {
+                        val currentActivity = activity as LauncherActivity
+                        actionMode = currentActivity.startSupportActionMode(this@WordlistFragment)
+                    }
+                    if (tracker.selection.size() > 0) {
+                        actionMode?.title = getString(R.string.learn, tracker.selection.size())
+                    } else {
+                        actionMode?.finish()
+                    }
+                }
+            })
+        adapter.tracker = tracker
+
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.deleteWord(adapter.getAt(viewHolder.position).id)

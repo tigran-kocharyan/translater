@@ -1,6 +1,8 @@
 package ru.totowka.translator.domain.model
 
 import android.os.Parcelable
+import androidx.room.Ignore
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -10,7 +12,8 @@ import kotlinx.android.parcel.Parcelize
 data class WordEntity(
     var id: Int,
     var text: String? = null,
-    var meanings: ArrayList<MeaningEntity>? = null
+    var meanings: ArrayList<MeaningEntity>? = null,
+    @IgnoredOnParcel @Transient @Ignore var isSelected: Boolean = false
 ) : Parcelable
 
 /**

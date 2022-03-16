@@ -25,6 +25,7 @@ import ru.totowka.translator.databinding.FragmentWordlistBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.presentation.LauncherActivity
+import ru.totowka.translator.presentation.learn.view.LearnFragment
 import ru.totowka.translator.presentation.translate.view.TranslateFragment
 import ru.totowka.translator.presentation.wordinfo.WordDetailsBottomDialogFragment
 import ru.totowka.translator.presentation.wordlist.adapter.WordlistAdapter
@@ -96,13 +97,18 @@ class WordlistFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.learn -> {
-                if (tracker.selection!!.size() >= 1) {
+                if (tracker.selection!!.size() > 0) {
                     var result = tracker.selection!!.map {
                         adapter.getAt(it.toInt())
                     }.toList()
-                    Toast.makeText(this.context, result.toString(), Toast.LENGTH_LONG).show()
+                    tracker.clearSelection()
+                    (activity as AppCompatActivity).supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.fragment_container, LearnFragment.newInstance(result), LearnFragment.TAG)
+                        .commit()
                 } else {
-                    Toast.makeText(this.context, "Nothing to learn!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.context, "Nothing to learn!", Toast.LENGTH_SHORT).show()
                 }
                 true
             }

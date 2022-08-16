@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="title" format="string" />
-    <color name="blue">#0050cf</color>
-    <color name="grayLight">#7c89a3</color>
-    <color name="textPrimary">#000000</color>
-    <color name="textSecondary">#818C99</color>
-    <color name="windowBackground">#fff</color>
-
     <style name="App.ThemeOverlay.Toolbar.Title" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textSize">22sp</item>
     </style>
@@ -36,6 +30,14 @@
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="AppTheme.Text.Title1" parent="AppTheme.Text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="AppTheme.Text.Title2" parent="AppTheme.Text">

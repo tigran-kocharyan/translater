@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/learn_graph"
+    app:startDestination="@id/learnlistFragment">
+
+    <fragment
+        android:id="@+id/explanationFragment"
+        android:name="ru.totowka.translator.presentation.learn.view.ExplanationFragment"
+        android:label="@string/explanation" >
+        <action
+            android:id="@+id/action_explanationFragment_to_translateToEnglishFragment"
+            app:destination="@id/translateToEnglishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/translateToEnglishFragment"
+        android:name="ru.totowka.translator.presentation.learn.view.TranslateToEnglishFragment"
+        android:label="@string/translate_to_english" >
+        <action
+            android:id="@+id/action_translateToEnglishFragment_to_translateToRussianFragment"
+            app:destination="@id/translateToRussianFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/translateToRussianFragment"
+        android:name="ru.totowka.translator.presentation.learn.view.TranslateToRussianFragment"
+        android:label="@string/translate_to_russian" >
+        <action
+            android:id="@+id/action_translateToRussianFragment_to_audioFragment"
+            app:destination="@id/audioFragment" />
+        <action
+            android:id="@+id/action_translateToRussianFragment_to_learnlistFragment"
+            app:destination="@id/learnlistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioFragment"
+        android:name="ru.totowka.translator.presentation.learn.view.AudioFragment"
+        android:label="@string/type_by_audio" >
+        <action
+            android:id="@+id/action_audioFragment_to_learnlistFragment"
+            app:destination="@id/learnlistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/learnlistFragment"
+        android:name="ru.totowka.translator.presentation.learn.view.LearnlistFragment"
+        android:label="@string/learnlist_name" >
+        <action
+            android:id="@+id/action_learnlistFragment_to_explanationFragment"
+            app:destination="@id/explanationFragment" />
+    </fragment>
+</navigation>

@@ -8,4 +8,10 @@
     <string name="undefined">Неопределен</string>
     <string name="learn">%d слов для изучения</string>
     <string name="learn_name">Изучение слов</string>
+    <string name="explanation">Объяснение</string>
+    <string name="translate_to_russian">Переведите %s на русский</string>
+    <string name="translate_to_english">Переведите %s на английский</string>
+    <string name="type_by_audio">Запишите по аудио</string>
+    <string name="learnlist_name">Изучаемые слова</string>
+    <string name="learn_translation">Переведите слово…</string>
 </resources>

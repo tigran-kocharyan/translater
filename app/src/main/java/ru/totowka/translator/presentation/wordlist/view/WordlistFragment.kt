@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
@@ -23,8 +24,10 @@ import ru.totowka.translator.App
 import ru.totowka.translator.R
 import ru.totowka.translator.databinding.FragmentWordlistBinding
 import ru.totowka.translator.domain.interactor.DictionaryInteractor
+import ru.totowka.translator.domain.model.LearnEntity
 import ru.totowka.translator.domain.model.WordEntity
 import ru.totowka.translator.presentation.LauncherActivity
+import ru.totowka.translator.presentation.SharedViewModel
 import ru.totowka.translator.presentation.learn.view.LearnFragment
 import ru.totowka.translator.presentation.translate.view.TranslateFragment
 import ru.totowka.translator.presentation.wordinfo.WordDetailsBottomDialogFragment
@@ -48,6 +51,7 @@ class WordlistFragment : Fragment(), ActionMode.Callback {
     private lateinit var viewModel: WordlistViewModel
     private lateinit var binding: FragmentWordlistBinding
     private lateinit var tracker: SelectionTracker<Long>
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     @Inject
     lateinit var interactor: DictionaryInteractor
@@ -98,14 +102,15 @@ class WordlistFragment : Fragment(), ActionMode.Callback {
         return when (item?.itemId) {
             R.id.learn -> {
                 if (tracker.selection!!.size() > 0) {
-                    var result = tracker.selection!!.map {
+                    val result = tracker.selection!!.map {
                         adapter.getAt(it.toInt())
                     }.toList()
                     tracker.clearSelection()
+                    sharedViewModel.setLearns(result.map { LearnEntity(it) })
                     (activity as AppCompatActivity).supportFragmentManager
                         .beginTransaction()
                         .addToBackStack(null)
-                        .add(R.id.fragment_container, LearnFragment.newInstance(result), LearnFragment.TAG)
+                        .add(R.id.fragment_container, LearnFragment.newInstance(), LearnFragment.TAG)
                         .commit()
                 } else {
                     Toast.makeText(this.context, "Nothing to learn!", Toast.LENGTH_SHORT).show()
